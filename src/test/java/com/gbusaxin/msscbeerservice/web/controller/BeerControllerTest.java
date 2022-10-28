@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gbusaxin.msscbeerservice.web.model.BeerDto;
 import com.gbusaxin.msscbeerservice.web.model.BeerStyleEnum;
 import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -23,11 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BeerControllerTest {
 
-    @Autowired
     MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper objectMapper;
+    @BeforeEach
+    void sutUp(){
+        mockMvc = MockMvcBuilders.standaloneSetup(BeerController.class).build();
+    }
 
     @Test
     void getBeerById() throws Exception {
@@ -40,6 +43,7 @@ class BeerControllerTest {
     @Test
     void saveNewBeer() throws Exception {
         BeerDto beerDto = getValidBeerDto();
+        ObjectMapper objectMapper = new ObjectMapper();
         String beerToJson = objectMapper.writeValueAsString(beerDto);
         mockMvc.perform(post("/api/v1/beer/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -50,6 +54,7 @@ class BeerControllerTest {
     @Test
     void updateBeer() throws Exception {
         BeerDto beerDto = getValidBeerDto();
+        ObjectMapper objectMapper = new ObjectMapper();
         String beerToJson = objectMapper.writeValueAsString(beerDto);
 
         mockMvc.perform(put("/api/v1/beer/" + UUID.randomUUID())
