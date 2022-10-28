@@ -3,6 +3,7 @@ package com.gbusaxin.msscbeerservice.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gbusaxin.msscbeerservice.web.model.BeerDto;
 import com.gbusaxin.msscbeerservice.web.model.BeerStyleEnum;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,7 +31,7 @@ class BeerControllerTest {
 
     @Test
     void getBeerById() throws Exception {
-        mockMvc.perform(get("/api/v1/beer" + UUID.randomUUID())
+        mockMvc.perform(get("/api/v1/beer/" + UUID.randomUUID())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
